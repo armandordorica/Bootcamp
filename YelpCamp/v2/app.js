@@ -26,19 +26,19 @@ var campgrounds = [
         {name: "Mountain Goat's Rest", image: "https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg"},
 ];
 
-Campground.create(
-    {
-        name: "Granite Hill", 
-        image: "https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg",
-        description: "This is a huge granite hill"
-    }, function(err, campground){
-        if(err){
-            console.log(err);
-        }else {
-            console.log("Newly created campground: ");
-            console.log(campground);
-        }
-    });
+// Campground.create(
+//     {
+//         name: "Granite Hill", 
+//         image: "https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg",
+//         description: "This is a huge granite hill"
+//     }, function(err, campground){
+//         if(err){
+//             console.log(err);
+//         }else {
+//             console.log("Newly created campground: ");
+//             console.log(campground);
+//         }
+//     });
 //Adding landing page 
 app.get("/", function(req, res){
     res.render("landing");
@@ -51,7 +51,7 @@ app.get("/campgrounds", function(req, res){
         if(err){
             console.log(err);
         }else{
-            res.render("campgrounds",{campgrounds:allCampgrounds});
+            res.render("index",{campgrounds:allCampgrounds});
         }
     });
     // res.render("campgrounds",{campgrounds:campgrounds});
@@ -67,7 +67,8 @@ app.post("/campgrounds", function(req, res){
     //redirect back to campgrounds page 
     var name = req.body.name;
     var image = req.body.image;
-    var newCampground  = {name: name, image: image};
+    var desc = req.body.description; //description is the name attribute in the input tag
+    var newCampground  = {name: name, image: image, description: desc};
     //Create a new campground and save it to the database
     
     Campground.create(newCampground, function(err, newlyCreated){
@@ -90,8 +91,15 @@ app.get("/campgrounds/new", function(req, res){
 //SHOW - show one campground unique to one ID
 app.get("/campgrounds/:id", function(req, res){
     //Find the campground with the provided ID
-    //Render show template with that campground
-    res.send("This will be the show page one day.")
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("show", {campground: foundCampground});
+        }
+    });
+
+
 });
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("The YelpCamp Server Has Started!");
