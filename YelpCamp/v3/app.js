@@ -8,7 +8,7 @@ var seedDB = require("./seeds");
 seedDB();
 
 //connect mongoose to the db
-mongoose.connect("mongodb://localhost/yelp_camp");
+mongoose.connect("mongodb://localhost/yelp_camp_v3");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');

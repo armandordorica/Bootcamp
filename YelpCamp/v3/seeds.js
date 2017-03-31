@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
 var Campground = require("./models/campground");
 
+var Comment = require("./models/comments");
+
 var data = [
         {name: "Cloud's rest",
         image: "https://farm4.staticflickr.com/3872/14435096036_39db8f04bc.jpg", 
@@ -27,18 +29,33 @@ function seedDB(){
      //ADD A FEW CAMPGROUNDS
     // loop through data and create a campground for each instance in the data array
         data.forEach(function(seed){
-        Campground.create(seed, function(err, data){
+        Campground.create(seed, function(err, campground){
            if(err){
                console.log(err)
            }else{
                console.log("added a campground");
+                   //ADD A FEW COMMENTS 
+                Comment.create(
+                    {
+                        text: "This place is great", 
+                        author: "Homer"
+
+                    }, function(err, comment){
+                        if(err){
+                            console.log(err);
+                        }else{
+                            campground.comments.push(comment);
+                            campground.save();
+                            console.log("Created new comment");
+                        }
+                    });
            }
        });
    });
     });
     
    
-    //ADD A FEW COMMENTS 
+
 }
 
 module.exports = seedDB; 
