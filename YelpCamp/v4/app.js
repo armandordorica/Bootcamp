@@ -112,7 +112,23 @@ app.get("/campgrounds/:id/comments/new", function(req, res){
         }
         
     });
+});
 
+app.post("/campgrounds/:id/comments", function(req, res){
+    //lookup campground using ID
+    Campground.findById(req.params.id, function(err, campground){
+        if(err){
+            console.log(err);
+            redirect("/campgrounds");
+        }
+        else{
+            //Create new comment
+            //Create new comment to Campground
+            //Redirect to show page of campground we're already on
+        }
+    });
+
+    
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
